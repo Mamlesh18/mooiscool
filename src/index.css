@@ -1,0 +1,94 @@
+:root {
+  --bg: #050505;
+  --bg-2: #0c0c0c;
+  --fg: #f4f4f0;
+  --fg-dim: #b9b9b1;
+  --fg-mute: #6a6a64;
+  --line: #1a1a1a;
+  --line-2: #2a2a2a;
+  --blue: #1ea7ff;
+  --blue-2: #00d4ff;
+  --blue-glow: rgba(30, 167, 255, 0.55);
+  --warn: #ffd60a;
+
+  --display: 'Anton', 'Bebas Neue', Impact, system-ui, sans-serif;
+  --crt: 'VT323', ui-monospace, Consolas, monospace;
+  --mono: 'Space Mono', ui-monospace, Consolas, monospace;
+  --sans: 'Space Mono', system-ui, sans-serif;
+
+  color-scheme: dark;
+  color: var(--fg);
+  background: var(--bg);
+  font: 16px/1.55 var(--sans);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg);
+  color: var(--fg);
+  overflow-x: hidden;
+  cursor: none;
+}
+
+/* Hide native cursor everywhere — we paint our own */
+a,
+button,
+input,
+textarea,
+select,
+[role='button'] {
+  cursor: none;
+}
+
+/* Custom scrollbar (analog tape feel) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #0a0a0a;
+  border-left: 1px solid var(--line);
+}
+::-webkit-scrollbar-thumb {
+  background: repeating-linear-gradient(
+    0deg,
+    #e9e9e3 0 2px,
+    #777 2px 4px,
+    #1a1a1a 4px 6px
+  );
+  border-radius: 0;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--fg);
+}
+
+::selection {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  background: transparent;
+  border: 0;
+}
