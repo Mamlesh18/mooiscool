@@ -1,5 +1,7 @@
-import { useEffect, useState } from 'react'
-import { motion } from 'framer-motion'
+import { Link } from 'react-router-dom'
+import { motion, useScroll, useTransform } from 'framer-motion'
+
+const MotionLink = motion.create(Link)
 
 const LETTERS = [
   { ch: 'M', from: { x: -800, y: -600, rotate: -90, scale: 2 } },
@@ -11,33 +13,47 @@ const LETTERS = [
   { ch: 'H', from: { x: -900, y: 500, rotate: -180, scale: 1.2 } },
 ]
 
-function Clock() {
-  const [time, setTime] = useState(() =>
-    new Date().toLocaleTimeString('en-GB', { hour12: false }),
-  )
-  useEffect(() => {
-    const id = setInterval(
-      () =>
-        setTime(new Date().toLocaleTimeString('en-GB', { hour12: false })),
-      1000,
-    )
-    return () => clearInterval(id)
-  }, [])
-  return <span>{time}</span>
-}
+export default function Hero() {
+  const { scrollY } = useScroll()
+  const zeusX = useTransform(scrollY, [0, 900], ['0vw', '-90vw'])
+  const zeusY = useTransform(scrollY, [0, 900], [0, 280])
+  const zeusRotate = useTransform(scrollY, [0, 900], [0, -38])
+  const zeusScale = useTransform(scrollY, [0, 900], [1, 0.7])
+  const zeusOpacity = useTransform(scrollY, [0, 700, 950], [1, 0.95, 0])
 
-export default function Hero({ active }) {
   return (
     <section className="hero">
-      <div className="hero-channel">
-        <span className="rec" />
-        <span>CH 22 // MAMLESH</span>
-      </div>
-      <div className="hero-time">
-        REC <Clock /> • LIVE
+      <MotionLink
+        to="/blogs"
+        className="hero-nav-blogs"
+        initial={{ opacity: 0, y: -10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 1.2, duration: 0.6 }}
+      >
+        <span className="square" />
+        BLOGS
+        <span className="arrow">↗</span>
+      </MotionLink>
+
+      <div className="hero-zeus-wrap" aria-hidden="true">
+        <motion.img
+          src="/zeus.png"
+          alt=""
+          className="hero-zeus"
+          style={{
+            x: zeusX,
+            y: zeusY,
+            rotate: zeusRotate,
+            scale: zeusScale,
+            opacity: zeusOpacity,
+          }}
+          initial={{ opacity: 0, scale: 1.2 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+        />
       </div>
 
-      <div>
+      <div className="hero-content">
         <motion.div className="mamlesh" aria-label="MAMLESH">
           {LETTERS.map((l, i) => (
             <motion.span
@@ -50,18 +66,14 @@ export default function Hero({ active }) {
                 opacity: 0,
                 filter: 'blur(12px)',
               }}
-              animate={
-                active
-                  ? {
-                      x: 0,
-                      y: 0,
-                      rotate: 0,
-                      scale: 1,
-                      opacity: 1,
-                      filter: 'blur(0px)',
-                    }
-                  : undefined
-              }
+              animate={{
+                x: 0,
+                y: 0,
+                rotate: 0,
+                scale: 1,
+                opacity: 1,
+                filter: 'blur(0px)',
+              }}
               transition={{
                 delay: 0.15 + i * 0.08,
                 duration: 0.95,
@@ -76,31 +88,28 @@ export default function Hero({ active }) {
         <motion.div
           className="hero-tagline"
           initial={{ opacity: 0, y: 20 }}
-          animate={active ? { opacity: 1, y: 0 } : undefined}
+          animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 1.05, duration: 0.7 }}
         >
-          <span className="glitch" data-text="Voice AI Architect">
-            Voice AI Architect
-          </span>
-          <span className="pipe">/</span>
-          <span>22</span>
-          <span className="pipe">/</span>
-          <span>Pipelines Faster Than Sonic</span>
+          <span className="hi">Voice AI Engineer</span>
         </motion.div>
       </div>
 
       <motion.div
-        className="hero-bottom"
+        className="hero-marquee"
+        aria-hidden="true"
         initial={{ opacity: 0 }}
-        animate={active ? { opacity: 1 } : undefined}
+        animate={{ opacity: 1 }}
         transition={{ delay: 1.4, duration: 0.6 }}
       >
-        <div>SIGNAL // STRONG</div>
-        <div className="scroll">
-          <span>SCROLL</span>
-          <span className="line" />
+        <div className="marquee-track">
+          {Array.from({ length: 8 }).map((_, i) => (
+            <span key={i}>
+              ★ VOICE AI ENGINEER ★ 10× INTERNSHIPS ★ 8× GUEST SPEAKER ★ 2×
+              PATENTS ★&nbsp;
+            </span>
+          ))}
         </div>
-        <div>16HRS // NO CAFFEINE</div>
       </motion.div>
     </section>
   )
